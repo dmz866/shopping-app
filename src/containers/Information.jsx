@@ -1,7 +1,21 @@
-import { Link } from 'react-router-dom';
+import { useContext, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
 import '../styles/components/Information.css';
 
 export function Information() {
+	const { state: { cart }, addBuyer } = useContext(AppContext);
+	const form = useRef(null);
+	const navigate = useNavigate();
+
+	const handlePayment = () => {
+		const formData = new FormData(form.current);
+		const buyer = Object.fromEntries(formData);
+		console.log(buyer);
+		addBuyer(buyer);
+		navigate('/checkout/payment');
+	};
+
 	return (
 		<div className="Information">
 			<div className="Information-content">
@@ -9,7 +23,7 @@ export function Information() {
 					<h2>Informacion de contacto:</h2>
 				</div>
 				<div className="Information-form">
-					<form action="">
+					<form ref={form}>
 						<input type="text" placeholder="Nombre completo" name="name" />
 						<input type="text" placeholder="Email" name="email" />
 						<input type="text" placeholder="Direccion" name="address" />
@@ -22,21 +36,25 @@ export function Information() {
 				</div>
 				<div className='Information-buttons'>
 					<div className='Information-back'>
-						Regresar
+						<Link to='/checkout'>Regresar</Link>
 					</div>
 					<div className='Information-next'>
-						<Link to='/checkout/payment'>Pagar</Link>
+						<button onClick={handlePayment}>Pagar</button>
 					</div>
 				</div>
 			</div>
 			<div className="Information-sidebar">
 				<h3>Pedido:</h3>
-				<div className="Information-item">
-					<div className="Information-element">
-						<h4>Item name</h4>
-						<span>$ 100</span>
-					</div>
-				</div>
+				{
+					cart?.map(product => (
+						<div key={product.id} className="Information-item">
+							<div className="Information-element">
+								<h4>{product.title}</h4>
+								<span>${product.price}</span>
+							</div>
+						</div>
+					))
+				}
 			</div>
 		</div>
 	)

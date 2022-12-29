@@ -9,10 +9,14 @@ export function useInitialState() {
 	const removeFromCart = (payload) => {
 		setState({ ...state, cart: state.cart.filter(i => i.id != payload.id) });
 	};
+	const addBuyer = (payload) => {
+		setState({ ...state, buyer: payload });
+	};
 
 	return {
 		state,
 		addToCart,
-		removeFromCart
+		removeFromCart,
+		addBuyer
 	};
 }
