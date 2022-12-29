@@ -11,7 +11,6 @@ export function Information() {
 	const handlePayment = () => {
 		const formData = new FormData(form.current);
 		const buyer = Object.fromEntries(formData);
-		console.log(buyer);
 		addBuyer(buyer);
 		navigate('/checkout/payment');
 	};
